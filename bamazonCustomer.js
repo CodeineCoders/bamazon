@@ -23,3 +23,24 @@ function afterConnection() {
     });
 }
 
+function promptUser(){
+    inquirer.prompt([
+        {
+            name: "product",
+            type: "list",
+            choices: function() {
+                var choicesArray = [];
+                for (var i = 0; i < results.length; i++) {
+                    choicesArray.push(results[i].product_name);
+                }
+                return choicesArray;
+            },
+            message: "What are you looking for?"
+        },
+        {
+            name: "amount",
+            type: "input",
+            message: "How many would you like?"
+        }
+    ])
+}
