@@ -72,5 +72,5 @@ function promptUser() {
             display();
             run();
         }
-    })
+    });
 }
