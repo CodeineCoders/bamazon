@@ -16,7 +16,7 @@ connection.connect(function (err) {
 });
 
 function afterConnection() {
-    connect.query("SELECT * FROM product", function (err, res) {
+    connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         console.log(res);
         promptUser()
@@ -24,10 +24,10 @@ function afterConnection() {
 }
 
 function promptUser() {
-    inquirer.prompt([
-        {
-            name: "product",
-            type: "list",
+    inquirer.prompt([{
+            name: "products",
+            type: "input",
+            message: "What are you looking for?",
             choices: function () {
                 var choicesArray = [];
                 for (var i = 0; i < results.length; i++) {
@@ -35,7 +35,6 @@ function promptUser() {
                 }
                 return choicesArray;
             },
-            message: "What are you looking for?"
         },
         {
             name: "amount",
@@ -45,7 +44,7 @@ function promptUser() {
     ]).then(function (answer) {
         var pickedProduct;
         for (var i = 0; i < results.length; i++) {
-            if (results[i].product_name === answer.product) {
+            if (results[i].product_name === answer.products) {
                 pickedProduct = results[i];
             }
         }

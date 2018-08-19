@@ -11,3 +11,9 @@ CREATE TABLE products(
     PRIMARY KEY (id)
 );
 
+INSERT INTO products(product_name,department_name,price,stock_quantity)
+VALUES
+    ("Cats", "Pets", 100.99, 5),
+    ("Dogs", "Pets", 150.99, 3);
+
+SELECT * FROM bamazon.products;
