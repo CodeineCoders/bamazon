@@ -3,32 +3,32 @@ var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
     host: "localhost",
-    port:3306,
+    port: 3306,
     user: "root",
     password: "password",
     database: "bamazon"
 });
 
-connection.connect(function(err) {
-    if(err) throw err;
+connection.connect(function (err) {
+    if (err) throw err;
     console.log("connected as:" + connection.threadId + "\n");
     afterConnection();
 });
 
 function afterConnection() {
-    connect.query("SELECT * FROM product", function(err, res) {
+    connect.query("SELECT * FROM product", function (err, res) {
         if (err) throw err;
         console.log(res);
         promptUser()
     });
 }
 
-function promptUser(){
+function promptUser() {
     inquirer.prompt([
         {
             name: "product",
             type: "list",
-            choices: function() {
+            choices: function () {
                 var choicesArray = [];
                 for (var i = 0; i < results.length; i++) {
                     choicesArray.push(results[i].product_name);
@@ -42,7 +42,7 @@ function promptUser(){
             type: "input",
             message: "How many would you like?"
         }
-    ]).then(function(answer) {
+    ]).then(function (answer) {
         var pickedProduct;
         for (var i = 0; i < results.length; i++) {
             if (results[i].product_name === answer.product) {
@@ -50,6 +50,27 @@ function promptUser(){
             }
         }
 
-        
+        if (pickedProduct.stock_quantity > parseInt(answer.amount)) {
+            connection.query("UPDATE products SET ? WHERE ?", [
+                {
+                    stock_quantity: pickedProduct.stock_quantity - parseInt(answer.amount)
+                },
+                {
+                    id: pickedProduct.id
+                }], function (error) {
+                    if (error) throw err;
+
+                    console.log("Item: " + pickedProduct.product_name);
+                    console.log("Quantity: " + parseInt(answer.amount));
+                    console.log("_____________________________");
+                    console.log("Total: " + "$" + (pickedProduct.price * parseInt(answer.amount)));
+                    display();
+                    run();
+                })
+        } else {
+            console.log("Not in Stock");
+            display();
+            run();
+        }
     })
 }
