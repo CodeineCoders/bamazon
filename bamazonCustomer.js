@@ -15,3 +15,11 @@ connection.connect(function(err) {
     afterConnection();
 });
 
+function afterConnection() {
+    connect.query("SELECT * FROM product", function(err, res) {
+        if (err) throw err;
+        console.log(res);
+        promptUser()
+    });
+}
+
