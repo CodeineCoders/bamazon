@@ -42,5 +42,14 @@ function promptUser(){
             type: "input",
             message: "How many would you like?"
         }
-    ])
+    ]).then(function(answer) {
+        var pickedProduct;
+        for (var i = 0; i < results.length; i++) {
+            if (results[i].product_name === answer.product) {
+                pickedProduct = results[i];
+            }
+        }
+
+        
+    })
 }
