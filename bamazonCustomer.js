@@ -8,3 +8,10 @@ var connection = mysql.createConnection({
     password: "password",
     database: "bamazon"
 });
+
+connection.connect(function(err) {
+    if(err) throw err;
+    console.log("connected as:" + connection.threadId + "\n");
+    afterConnection();
+});
+
